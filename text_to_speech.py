@@ -11,5 +11,5 @@ print(response)
 tts = gTTS(text=response, lang='en', slow=True)
 
 
-tts.save("hello.mp3")
-playsound('hello.mp3')
+tts.save("hello.wav")
+playsound('hello.wav')
