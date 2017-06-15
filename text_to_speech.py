@@ -1,5 +1,6 @@
 from gtts import gTTS
-from playsound import playsound
+# from playsound import playsound
+import pygame
 
 input_var = input("Enter something: ")
 print ("you entered " + input_var) 
@@ -10,6 +11,9 @@ print(response)
 
 tts = gTTS(text=response, lang='en', slow=True)
 
+pygame.mixer.init()
 
-tts.save("hello.mp3")
-playsound('hello.mp3')
+tts.save("hello.wav")
+pygame.mixer.music.load("hello.wav")
+pygame.mixer.music.play()
+# playsound('hello.mp3')
