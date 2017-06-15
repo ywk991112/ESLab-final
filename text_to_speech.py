@@ -3,6 +3,8 @@ from gtts import gTTS
 import pygame
 import os
 
+path = "audio/"
+
 def text_to_speech(response, filename):
 
     #input_var = input("Enter something: ")
@@ -12,10 +14,11 @@ def text_to_speech(response, filename):
 
 
     tts = gTTS(text=response, lang='en', slow=True)
+    tts = gTTS(text=response, lang='en')
 
     #pygame.mixer.init()
 
-    tts.save(filename)
+    tts.save(path + filename)
     # playsound('hello.wav')
     #pygame.mixer.music.load("hello.wav")
     #pygame.mixer.music.play()
@@ -24,4 +27,4 @@ def text_to_speech(response, filename):
     
 def play_wav(filename):
     print("Play music: ", filename)
-    os.system("omxplayer -p -o local " + str(filename))
+    os.system("omxplayer -p -o local " + path + str(filename))

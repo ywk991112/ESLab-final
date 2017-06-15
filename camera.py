@@ -3,7 +3,7 @@ from timeit import default_timer as timer
 
 def picture_save(number, file_name):
     camera = picamera.PiCamera()
-    path = 'cap/'
+    path = 'picture/'
     start = timer()
     '''
     for i in range(1):
