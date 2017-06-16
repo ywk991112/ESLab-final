@@ -5,16 +5,17 @@ import os
 
 path = "audio/"
 
-def text_to_speech(response, filename):
+def text_to_speech(response, filename, slow=False):
 
     #input_var = input("Enter something: ")
     print ("you entered " + response) 
     # response = intent_parser(input_var)
     print(response)
 
-
-    tts = gTTS(text=response, lang='en', slow=True)
-    tts = gTTS(text=response, lang='en')
+    if (slow):
+        tts = gTTS(text=response, lang='en', slow=True)
+    else:
+        tts = gTTS(text=response, lang='en')
 
     #pygame.mixer.init()
 

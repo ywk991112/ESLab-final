@@ -2,7 +2,7 @@ import http.client, urllib.request, urllib.parse, urllib.error, base64, json
 import cognitive_face as CF
 import pickle
 
-from db import KEY, person2Id
+from db import KEY
 from camera import path
 
 def postRequest(service, body={}, params="", contentType="json", method="POST", getResponse=True):
@@ -27,7 +27,12 @@ def postRequest(service, body={}, params="", contentType="json", method="POST", 
 def detect(filename):
     f = open(path+filename, 'rb')
     data = postRequest('detect', f, contentType="octet-stream")
-    return data[0]['faceId']
+    try:
+        faceid = data[0]['faceId']
+    except:
+        faceid = 1234567
+    return faceid
+
 
 # faceId: str
 def identify(groupId, filename):
@@ -43,7 +48,10 @@ def identify(groupId, filename):
 
     data = postRequest('identify', body)    
     # return data
-    id = data[0]['candidates'][0]['personId']
+    try:
+        id = data[0]['candidates'][0]['personId']
+    except:
+        return "none"
     with open('id2person.pickle', 'rb') as f:
         id2person = pickle.load(f)
     return id2person[id]
