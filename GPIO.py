@@ -2,6 +2,7 @@ import  RPi.GPIO as GPIO
 import time
 from  camera import picture_save
 from  text_to_speech import text_to_speech, play_wav 
+from face import identify
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.IN,pull_up_down=GPIO.PUD_UP)
@@ -9,6 +10,7 @@ GPIO.setup(15, GPIO.IN,pull_up_down=GPIO.PUD_UP)
 GPIO.setup(23, GPIO.IN,pull_up_down=GPIO.PUD_UP)
 
 person_name = []
+filename = "test.jpg"
 
 while True:
     inputA = GPIO.input(18)
@@ -17,7 +19,9 @@ while True:
 
     if (inputA == False):
         print("Button A press ")
-        picture_save(1, "test.jpg")
+        picture_save(1, filename)
+        person = identify(0, filename)
+        print(person)
     if (inputB == False):
         print("Button B press ")
         response = "Is enemy..."

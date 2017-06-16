@@ -1,9 +1,10 @@
 import http.client, urllib.request, urllib.parse, urllib.error, base64, json
 import cognitive_face as CF
+import pickle
 
 from db import KEY, person2Id
+from camera import path
 
-photoDir = './photo/'
 def postRequest(service, body={}, params="", contentType="json", method="POST", getResponse=True):
     headers = {
         # Request headers
@@ -24,7 +25,7 @@ def postRequest(service, body={}, params="", contentType="json", method="POST", 
         print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 def detect(filename):
-    f = open(photoDir+filename, 'rb')
+    f = open(path+filename, 'rb')
     data = postRequest('detect', f, contentType="octet-stream")
     return data[0]['faceId']
 
@@ -42,7 +43,10 @@ def identify(groupId, filename):
 
     data = postRequest('identify', body)    
     # return data
-    return data[0]['candidates'][0]['personId']
+    id = data[0]['candidates'][0]['personId']
+    with open('id2person.pickle', 'rb') as f:
+        id2person = pickle.load(f)
+    return id2person[id]
 
 def createGroup(groupId, name):
     print('Create group with id {}'.format(groupId))
@@ -68,7 +72,7 @@ def createPerson(groupId, nameList):
 def addFace(groupId, personId, person, filenameList):
     for filename in filenameList:
         print('Photo {} add to {}\'s database in group {}'.format(filename, person, groupId))   
-        f = open(photoDir+filename, 'rb')
+        f = open(path+filename, 'rb')
         params = '/{}/persons/{}/persistedFaces'.format(groupId, personId[person])
         data = postRequest('persongroups', f, params, contentType='octet-stream')
 
@@ -77,17 +81,31 @@ def trainGroup(groupId):
     params = '/{}/train'.format(groupId)
     data = postRequest('persongroups', params=params, getResponse=False)
 
+def addDb(groupId):
+    createGroup(groupId, 'test')
+    personId = createPerson(groupId, ['kwei', 'chou'])
+    with open('personId.pickle', 'wb') as f:
+        pickle.dump(personId, f)
+    names = ['kwei', 'chou']
+    for name in names:
+        addFace(groupId, personId, name, 
+                [(name+str(i)+'.jpg') for i in range(9)])
+    trainGroup(groupId)
+    print(identify(groupId, 'kwei9.jpg'))
+    print(personId['kwei'])
+    print(identify(groupId, 'chou9.jpg'))
+    print(personId['chou'])
+    
+def db():
+    id2person = {}
+    personId = None 
+    with open('personId.pickle', 'rb') as f:
+        personId = pickle.load(f)
+    for key in personId.keys():
+        id2person[personId[key]] = key
+    with open('id2person.pickle', 'wb') as f:
+        pickle.dump(id2person, f)
+
+
 if __name__ == '__main__':
-    createGroup(888, 'test')
-    personId = createPerson(888, ['lian', 'chin', 'tom'])
-    addFace(888, personId, 'lian', ['lian1.jpg', 'lian2.jpg'])
-    addFace(888, personId, 'chin', ['chin1.jpg', 'chin2.jpg'])
-    addFace(888, personId, 'tom', ['tom1.jpg', 'tom2.jpg'])
-    trainGroup(888)
-    print(identify(888, 'lian3.jpg'))
-    print(personId['lian'])
-    print(identify(888, 'chin3.jpg'))
-    print(personId['chin'])
-    print(identify(888, 'tom3.jpg'))
-    print(personId['tom'])
-    deleteGroup(888)
+    print(identify(0, 'kwei9.jpg'))
