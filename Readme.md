@@ -1,3 +1,9 @@
+# Recognition Helmet
+This is the final project of Embedded System course in NTUEE.
+
+![alt text](https://github.com/ywk991112/ESLab-final/picture/result.jpg)
+[Report](https://github.com/ywk991112/ESLab-final/blob/master/Report.pdf)
+
 ## Files description
 
 ### GPIO.py
