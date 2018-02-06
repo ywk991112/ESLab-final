@@ -2,7 +2,8 @@
 This is the final project of Embedded System course in NTUEE.
 
 ![alt text](https://github.com/ywk991112/ESLab-final/blob/master/picture/result.jpg)
-[Report](https://github.com/ywk991112/ESLab-final/blob/master/Report.pdf)
+- [Report](https://github.com/ywk991112/ESLab-final/blob/master/Report.pdf)
+- [Video](https://www.youtube.com/watch?v=40-1K9EXpRs&feature=youtu.be)
 
 ## Files description
 
