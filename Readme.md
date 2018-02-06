@@ -1,4 +1,5 @@
 # Recognition Helmet
+This is a helmet which can recognize the faces and talk to the user (prototype).
 This is the final project of Embedded System course in NTUEE.
 
 ![alt text](https://github.com/ywk991112/ESLab-final/blob/master/picture/result.jpg)
